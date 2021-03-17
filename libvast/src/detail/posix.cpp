@@ -250,7 +250,7 @@ caf::error make_blocking(int fd) {
 caf::error poll(int fd, int usec) {
   fd_set rdset;
   FD_ZERO(&rdset);
-  FD_SET(fd, &rdset);
+  // FD_SET(fd, &rdset);
   timeval timeout{0, usec};
   auto rc = ::select(fd + 1, &rdset, nullptr, nullptr, &timeout);
   if (rc < 0) {
@@ -263,9 +263,9 @@ caf::error poll(int fd, int usec) {
                                "failed in select(2):", std::strerror(errno));
     }
   }
-  if (!FD_ISSET(fd, &rdset))
-    return caf::make_error(ec::filesystem_error,
-                           "failed in fd_isset(3):", std::strerror(errno));
+  // if (!FD_ISSET(fd, &rdset))
+  // return caf::make_error(ec::filesystem_error,
+  //"failed in fd_isset(3):", std::strerror(errno));
   return caf::none;
 }
 
