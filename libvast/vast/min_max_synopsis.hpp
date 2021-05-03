@@ -9,11 +9,12 @@
 #pragma once
 
 #include <caf/deserializer.hpp>
-#include <caf/optional.hpp>
 #include <caf/serializer.hpp>
 #include <caf/sum_type.hpp>
 
 #include "vast/synopsis.hpp"
+
+#include <optional>
 
 namespace vast {
 

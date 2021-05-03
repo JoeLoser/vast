@@ -22,6 +22,7 @@
 
 #include <caf/fwd.hpp>
 #include <caf/none.hpp>
+#include <optional>
 
 namespace vast::format::csv {
 
@@ -82,7 +83,7 @@ private:
     record_type type;
     std::vector<std::string> sorted;
   };
-  caf::optional<record_type> make_layout(const std::vector<std::string>& names);
+  std::optional<record_type> make_layout(const std::vector<std::string>& names);
 
   caf::expected<parser_type> read_header(std::string_view line);
 
@@ -90,7 +91,7 @@ private:
   std::unique_ptr<detail::line_range> lines_;
   vast::schema schema_;
   std::vector<rec_table> records;
-  caf::optional<parser_type> parser_;
+  std::optional<parser_type> parser_;
   options opt_;
   mutable size_t num_lines_ = 0;
   mutable size_t num_invalid_lines_ = 0;

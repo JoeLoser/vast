@@ -73,11 +73,11 @@ TEST(flatten) {
   // clang-format on
   auto values
     = std::vector<data>{"foo", -42, list{1, 2, 3}, caf::none, caf::none, true};
-  auto r = unbox(make_record(rt, std::vector<data>(values)));
+  auto r = vast::test::unbox(make_record(rt, std::vector<data>(values)));
   REQUIRE_EQUAL(r, xs);
   MESSAGE("flatten");
   auto fr = flatten(r);
-  auto ftr = unbox(flatten(r, rt));
+  auto ftr = vast::test::unbox(flatten(r, rt));
   CHECK_EQUAL(fr, ftr);
   REQUIRE_EQUAL(fr.size(), values.size());
   CHECK_EQUAL(fr["b.c"], -42);

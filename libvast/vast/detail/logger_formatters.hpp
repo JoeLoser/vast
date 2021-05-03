@@ -277,21 +277,6 @@ struct fmt::formatter<caf::typed_event_based_actor<Sigs...>*> {
 };
 
 template <class T>
-struct fmt::formatter<caf::optional<T>> {
-  template <typename ParseContext>
-  constexpr auto parse(ParseContext& ctx) {
-    return ctx.begin();
-  }
-
-  template <typename FormatContext>
-  auto format(const caf::optional<T>& item, FormatContext& ctx) {
-    if (!item)
-      return format_to(ctx.out(), "*nullopt");
-    return format_to(ctx.out(), "*{}", *item);
-  }
-};
-
-template <class T>
 struct fmt::formatter<std::optional<T>> {
   template <typename ParseContext>
   constexpr auto parse(ParseContext& ctx) {

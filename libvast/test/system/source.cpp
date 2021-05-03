@@ -9,6 +9,7 @@
 #define SUITE source
 
 #include "vast/system/source.hpp"
+#include <optional>
 
 #include "vast/fwd.hpp"
 
@@ -68,7 +69,7 @@ TEST(zeek source) {
                                                        std::move(stream));
   MESSAGE("start source for producing table slices of size 10");
   auto src
-    = self->spawn(source, std::move(reader), events::slice_size, caf::none,
+    = self->spawn(source, std::move(reader), events::slice_size, std::nullopt, 
                   vast::system::type_registry_actor{}, vast::schema{},
                   std::string{}, vast::system::accountant_actor{});
   run();

@@ -27,6 +27,7 @@
 #include <string>
 #include <type_traits>
 #include <typeindex>
+#include <optional>
 
 namespace vast {
 
@@ -475,7 +476,7 @@ data_view make_data_view(const T& x) {
 
 /// @relates view_trait
 template <class T>
-data_view make_data_view(const optional<T>& x) {
+data_view make_data_view(const std::optional<T>& x) {
   if (!x)
     return make_view(caf::none);
   return make_view(*x);

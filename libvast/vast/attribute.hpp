@@ -9,16 +9,16 @@
 #pragma once
 
 #include "vast/detail/operators.hpp"
-#include "vast/optional.hpp"
 
 #include <string>
+#include <optional>
 
 namespace vast {
 
 /// A qualifier in the form of a key and optional value.
 struct attribute : detail::totally_ordered<attribute> {
   attribute(std::string key = {});
-  attribute(std::string key, optional<std::string> value);
+  attribute(std::string key, std::optional<std::string> value);
 
   friend bool operator==(const attribute& x, const attribute& y);
 
@@ -26,11 +26,11 @@ struct attribute : detail::totally_ordered<attribute> {
 
   template <class Inspector>
   friend auto inspect(Inspector& f, attribute& a) {
-    return f(a.key, a.value);
+    return f(a.key, *a.value);
   }
 
   std::string key;
-  optional<std::string> value;
+  std::optional<std::string> value;
 };
 
 } // namespace vast

@@ -10,6 +10,7 @@
 
 #include "vast/concept/parseable/to.hpp"
 #include "vast/concept/parseable/vast.hpp"
+#include "vast/optional.hpp"
 #include "vast/defaults.hpp"
 #include "vast/logger.hpp"
 #include "vast/si_literals.hpp"
@@ -66,6 +67,8 @@ caf::error explorer_validate_args(const caf::settings& args) {
   return caf::none;
 }
 
+//template<class...> struct undef;
+
 caf::expected<caf::actor>
 spawn_explorer(node_actor::stateful_pointer<node_state> self,
                spawn_arguments& args) {
@@ -74,12 +77,12 @@ spawn_explorer(node_actor::stateful_pointer<node_state> self,
   if (auto error = explorer_validate_args(args.inv.options))
     return error;
   auto maybe_parse
-    = [](caf::optional<std::string>&& str) -> std::optional<vast::duration> {
+    = [](auto&& str) -> std::optional<vast::duration> {
     if (!str)
-      return std::nullopt;
+      return {};
     auto parsed = to<vast::duration>(*str);
     if (!parsed)
-      return std::nullopt;
+      return {};
     return *parsed;
   };
   const auto& options = args.inv.options;
@@ -93,6 +96,7 @@ spawn_explorer(node_actor::stateful_pointer<node_state> self,
                              defaults::explore::max_events);
   limits.per_result = caf::get_or(options, "vast.explore.max-events-context",
                                   defaults::explore::max_events_context);
+  //[[maybe_unused]] undef<decltype(explorer), decltype(self), decltype(limits), decltype(before), decltype(after), decltype(by)> x{};
   auto handle = self->spawn(explorer, self, limits, before, after, by);
   VAST_VERBOSE("{} spawned an explorer", self);
   return handle;

@@ -12,6 +12,7 @@
 #include "vast/component_config.hpp"
 #include "vast/concept/parseable/to.hpp"
 #include "vast/concept/parseable/vast/endpoint.hpp"
+#include "vast/optional.hpp"
 #include "vast/concept/parseable/vast/expression.hpp"
 #include "vast/concept/parseable/vast/schema.hpp"
 #include "vast/concept/parseable/vast/table_slice_encoding.hpp"
@@ -47,6 +48,8 @@ caf::expected<expression> parse_expression(command::argument_iterator begin,
 
 } // namespace
 
+template<class...> struct id_type;
+
 caf::expected<caf::actor>
 make_source(caf::actor_system& sys, const std::string& format,
             const invocation& inv, accountant_actor accountant,
@@ -58,7 +61,7 @@ make_source(caf::actor_system& sys, const std::string& format,
   auto udp_port = std::optional<uint16_t>{};
   // Parse options.
   const auto& options = inv.options;
-  auto max_events = caf::get_if<size_t>(&options, "vast.import.max-events");
+  auto max_events = to_std(caf::get_if<size_t>(&options, "vast.import.max-events"));
   auto uri = caf::get_if<std::string>(&options, "vast.import.listen");
   auto file = caf::get_if<std::string>(&options, "vast.import.read");
   auto type = caf::get_if<std::string>(&options, "vast.import.type");
@@ -67,7 +70,7 @@ make_source(caf::actor_system& sys, const std::string& format,
     return caf::make_error(ec::invalid_configuration, "failed to extract "
                                                       "batch-encoding option");
   VAST_ASSERT(encoding != table_slice_encoding::none);
-  auto slice_size = get_or(options, "vast.import.batch-size",
+  auto slice_size = caf::get_or(options, "vast.import.batch-size",
                            defaults::import::table_slice_size);
   if (slice_size == 0)
     slice_size = std::numeric_limits<decltype(slice_size)>::max();
@@ -117,6 +120,7 @@ make_source(caf::actor_system& sys, const std::string& format,
   auto type_filter = type ? std::move(*type) : std::string{};
   auto src =
     [&](auto&&... args) {
+      //[[maybe_unused]] id_type<decltype(args)...> x{};
       if (udp_port) {
         if (detached)
           return sys.middleman().spawn_broker<caf::spawn_options::detach_flag>(

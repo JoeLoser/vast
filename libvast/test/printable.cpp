@@ -12,8 +12,6 @@
 
 #include <sstream>
 
-#include <caf/optional.hpp>
-
 #include "vast/concept/printable/core.hpp"
 #include "vast/concept/printable/numeric.hpp"
 #include "vast/concept/printable/print.hpp"
@@ -25,6 +23,8 @@
 #include "vast/concept/printable/vast/data.hpp"
 #include "vast/concept/printable/vast/view.hpp"
 #include "vast/detail/escapers.hpp"
+
+#include <optional>
 
 using namespace std::string_literals;
 using namespace vast;
@@ -236,7 +236,7 @@ TEST(list) {
 }
 
 TEST(optional) {
-  caf::optional<int> x;
+  std::optional<int> x;
   auto p = -printers::integral<int>;
   std::string str;
   CHECK(p(str, x));

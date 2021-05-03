@@ -18,6 +18,8 @@
 #include "vast/logger.hpp"
 #include "vast/type.hpp"
 
+#include <optional>
+
 namespace vast {
 
 namespace {
@@ -77,7 +79,7 @@ struct expander {
     // Builds an additional predicate for subnet type extractor predicates. The
     // additional :addr in S predicate gets appended as disjunction afterwards.
     auto build_addr_pred
-      = [](auto& lhs, auto op, auto& rhs) -> caf::optional<expression> {
+      = [](auto& lhs, auto op, auto& rhs) -> std::optional<expression> {
       if (auto t = caf::get_if<type_extractor>(&lhs))
         if (auto d = caf::get_if<data>(&rhs))
           if (op == relational_operator::equal)

@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include <caf/optional.hpp>
-
 #include "vast/schema.hpp"
 
 namespace vast::event_types {

@@ -20,7 +20,6 @@
 
 #include <caf/deserializer.hpp>
 #include <caf/expected.hpp>
-#include <caf/optional.hpp>
 #include <caf/serializer.hpp>
 #include <caf/settings.hpp>
 
@@ -32,6 +31,7 @@
 #include <type_traits>
 #include <unordered_set>
 #include <vector>
+#include <optional>
 
 #include <tsl/robin_map.h>
 
@@ -140,7 +140,7 @@ private:
   };
 
   // Retrieves the unique digest for a given input or generates a new one.
-  caf::optional<key> make_digest(data_view x) {
+  std::optional<key> make_digest(data_view x) {
     for (size_t i = 0; i < max_hash_rounds; ++i) {
       // Compute a hash digest.
       auto digest = hash(x, i);
@@ -160,7 +160,7 @@ private:
       if (auto it = seeds_.find(x); it != seeds_.end())
         return key{hash(x, it->second)};
     }
-    return caf::none;
+    return {};
   }
 
   /// Locates the digest for a given input.

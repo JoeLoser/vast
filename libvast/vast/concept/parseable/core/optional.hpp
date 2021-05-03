@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include <caf/optional.hpp>
-
 #include "vast/concept/parseable/core/parser.hpp"
 #include "vast/concept/support/detail/attr_fold.hpp"
+
+#include <optional>
 
 namespace vast {
 
@@ -24,7 +24,7 @@ public:
     std::conditional_t<
       std::is_same_v<inner_attribute, unused_type>,
       unused_type,
-      caf::optional<inner_attribute>
+      std::optional<inner_attribute>
     >;
 
   constexpr explicit optional_parser(Parser p) : parser_{std::move(p)} {

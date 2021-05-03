@@ -30,6 +30,7 @@
 #include <caf/fwd.hpp>
 
 #include <chrono>
+#include <optional>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -244,7 +245,7 @@ private:
   vast::schema schema_;
   type type_;
   record_type layout_;
-  caf::optional<size_t> proto_field_;
+  std::optional<size_t> proto_field_;
   std::vector<rule<iterator_type, data>> parsers_;
 };
 

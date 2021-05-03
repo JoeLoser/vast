@@ -13,7 +13,6 @@
 #include "vast/type.hpp"
 
 #include <caf/deserializer.hpp>
-#include <caf/optional.hpp>
 #include <caf/serializer.hpp>
 
 #include <optional>

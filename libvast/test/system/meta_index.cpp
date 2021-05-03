@@ -24,6 +24,7 @@
 #include "vast/table_slice_builder_factory.hpp"
 #include "vast/uuid.hpp"
 #include "vast/view.hpp"
+#include <optional>
 
 using namespace vast;
 using namespace vast::system;
@@ -37,7 +38,7 @@ constexpr size_t num_events_per_parttion = 25;
 
 const vast::time epoch;
 
-vast::time get_timestamp(caf::optional<data_view> element) {
+vast::time get_timestamp(std::optional<data_view> element) {
   return materialize(caf::get<view<vast::time>>(*element));
 }
 

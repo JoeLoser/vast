@@ -24,10 +24,10 @@
 #include "vast/type.hpp"
 #include "vast/value_index.hpp"
 
-#include <caf/optional.hpp>
 #include <caf/settings.hpp>
 
 #include <cmath>
+#include <optional>
 
 using namespace std::string_view_literals;
 

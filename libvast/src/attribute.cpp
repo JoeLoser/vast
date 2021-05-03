@@ -15,7 +15,7 @@ namespace vast {
 attribute::attribute(std::string key) : key{std::move(key)} {
 }
 
-attribute::attribute(std::string key, optional<std::string> value)
+attribute::attribute(std::string key, std::optional<std::string> value)
   : key{std::move(key)},
     value{std::move(value)} {
 }

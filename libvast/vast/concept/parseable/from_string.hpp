@@ -11,8 +11,8 @@
 #include <string>
 #include <type_traits>
 
-#include "vast/optional.hpp"
 #include "vast/concept/parseable/parse.hpp"
+#include <optional>
 
 namespace vast {
 
@@ -23,8 +23,8 @@ template <
   class... Args
 >
 auto from_string(Iterator begin, Iterator end, Args&&... args)
-  -> std::enable_if_t<is_parseable_v<Iterator, To>, optional<To>> {
-  optional<To> t{To{}};
+  -> std::enable_if_t<is_parseable_v<Iterator, To>, std::optional<To>> {
+    std::optional<To> t{To{}};
   if (Parser{std::forward<Args>(args)...}(begin, end, *t))
     return t;
   return {};

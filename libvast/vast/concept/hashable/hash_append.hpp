@@ -160,6 +160,12 @@ void hash_append(Hasher& h, std::chrono::time_point<Clock, Duration> t) {
   hash_append(h, t.time_since_epoch());
 }
 
+//template <class Hasher, class T>
+//void hash_append(Hasher& h, std::optional<T> x) {
+  //if(x) 
+    //hash_append(h, *x);
+//}
+
 // -- empty types -------------------------------------------------------------
 
 template <class Hasher, class T>

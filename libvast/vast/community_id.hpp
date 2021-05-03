@@ -12,8 +12,6 @@
 #include <string>
 #include <type_traits>
 
-#include <caf/optional.hpp>
-
 #include "vast/address.hpp"
 #include "vast/concept/hashable/hash_append.hpp"
 #include "vast/concept/hashable/sha1.hpp"

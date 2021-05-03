@@ -17,6 +17,7 @@
 #include "vast/concept/printable/stream.hpp"
 #include "vast/defaults.hpp"
 #include "vast/detail/make_io_stream.hpp"
+#include <optional>
 #include "vast/detail/spawn_container_source.hpp"
 #include "vast/format/zeek.hpp"
 #include "vast/system/archive.hpp"
@@ -90,7 +91,7 @@ struct importer_fixture : Base {
     auto reader = std::make_unique<format::zeek::reader>(caf::settings{},
                                                          std::move(stream));
     return this->self->spawn(system::source, std::move(reader), slice_size,
-                             caf::none, vast::system::type_registry_actor{},
+                             std::nullopt, vast::system::type_registry_actor{},
                              vast::schema{}, std::string{},
                              vast::system::accountant_actor{});
   }

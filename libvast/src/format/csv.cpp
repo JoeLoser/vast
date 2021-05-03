@@ -25,6 +25,7 @@
 #include <caf/settings.hpp>
 
 #include <ostream>
+#include <optional>
 #include <string_view>
 #include <type_traits>
 
@@ -174,18 +175,18 @@ const char* reader::name() const {
   return "csv-reader";
 }
 
-caf::optional<record_type>
+std::optional<record_type>
 reader::make_layout(const std::vector<std::string>& names) {
   VAST_TRACE_SCOPE("{}", VAST_ARG(names));
   for (auto& t : schema_) {
     if (auto r = caf::get_if<record_type>(&t)) {
-      auto select_fields = [&]() -> caf::optional<record_type> {
+      auto select_fields = [&]() -> std::optional<record_type> {
         std::vector<record_field> result_raw;
         for (auto& name : names) {
           if (auto field = r->at(name))
             result_raw.emplace_back(name, field->type);
           else
-            return caf::none;
+            return {};
         }
         return record_type{std::move(result_raw)}.name(r->name()).attributes(
           r->attributes());
@@ -197,7 +198,7 @@ reader::make_layout(const std::vector<std::string>& names) {
       return record_type{{t.name(), t}}.name(t.name());
     } // else skip
   }
-  return caf::none;
+  return {};
 }
 
 namespace {
@@ -229,11 +230,11 @@ struct container_parser_builder {
       };
       // clang-format on
     } else if constexpr (std::is_same_v<T, enumeration_type>) {
-      auto to_enumeration = [t](std::string s) -> caf::optional<Attribute> {
+      auto to_enumeration = [t](std::string s) -> std::optional<Attribute> {
         auto i = std::find(t.fields.begin(), t.fields.end(), s);
         if (i == t.fields.end()) {
           VAST_WARN("csv reader failed to parse unexpected enum value {}", s);
-          return caf::none;
+          return {};
         }
         return detail::narrow_cast<enumeration>(
           std::distance(t.fields.begin(), i));
@@ -285,7 +286,7 @@ struct csv_parser_factory {
 
   template <class T>
   struct add_t {
-    bool operator()(const caf::optional<T>& x) const {
+    bool operator()(const std::optional<T>& x) const {
       return bptr_->add(make_data_view(x));
     }
     table_slice_builder_ptr bptr_;
@@ -331,11 +332,11 @@ struct csv_parser_factory {
       return (-as<pattern>(as<std::string>(+(parsers::any - opt_.separator))))
         .with(add_t<pattern>{bptr_});
     } else if constexpr (std::is_same_v<T, enumeration_type>) {
-      auto to_enumeration = [t](std::string s) -> caf::optional<enumeration> {
+      auto to_enumeration = [t](std::string s) -> std::optional<enumeration> {
         auto i = std::find(t.fields.begin(), t.fields.end(), s);
         if (i == t.fields.end()) {
           VAST_WARN("csv reader failed to parse unexpected enum value {}", s);
-          return caf::none;
+          return {};
         }
         return detail::narrow_cast<enumeration>(
           std::distance(t.fields.begin(), i));
@@ -363,7 +364,7 @@ struct csv_parser_factory {
 };
 
 template <class Iterator>
-caf::optional<reader::parser_type>
+std::optional<reader::parser_type>
 make_csv_parser(const record_type& layout, table_slice_builder_ptr builder,
                 const options& opt) {
   auto num_fields = layout.fields.size();

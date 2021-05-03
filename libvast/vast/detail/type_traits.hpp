@@ -8,11 +8,10 @@
 
 #pragma once
 
-#include <caf/detail/type_traits.hpp>
-
 #include <iterator>
 #include <streambuf>
 #include <string>
+#include <optional>
 #include <tuple>
 #include <type_traits>
 #include <vector>
@@ -152,7 +151,7 @@ struct remove_optional {
 };
 
 template <class T>
-struct remove_optional<caf::optional<T>> {
+struct remove_optional<std::optional<T>> {
   using type = T;
 };
 
