@@ -25,7 +25,7 @@ namespace vast {
 /// @returns *from* converted to `T`.
 template <class To, class From, class... Opts>
 auto to(From&& from, Opts&&... opts)
-  -> std::enable_if_t<is_convertible<std::decay_t<From>, To>{},
+  -> std::enable_if_t<is_convertible_v<std::decay_t<From>, To>,
                       caf::expected<To>> {
   using return_type
     = decltype(convert(from, std::declval<To&>(), std::forward<Opts>(opts)...));
