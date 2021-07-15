@@ -8,11 +8,21 @@
 
 #pragma once
 
+#include <iterator>
+
 namespace vast::detail {
 
 template <class T>
 concept transparent = requires {
   typename T::is_transparent;
+};
+
+// Types that work with std::data and std::size (= containers)
+
+template <class T>
+concept container = requires(T t) {
+  std::data(t);
+  std::size(t);
 };
 
 } // namespace vast::detail

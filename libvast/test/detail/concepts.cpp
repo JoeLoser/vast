@@ -12,6 +12,7 @@
 
 #include "vast/test/test.hpp"
 
+#include <array>
 #include <type_traits>
 
 TEST(transparent) {
@@ -21,4 +22,19 @@ TEST(transparent) {
   struct without {};
   static_assert(vast::detail::transparent<with>);
   static_assert(!vast::detail::transparent<without>);
+}
+
+TEST(container) {
+  static_assert(vast::detail::container<std::array<int, 1>>);
+  struct empty {};
+  static_assert(!vast::detail::container<empty>);
+  struct user_defined_type {
+    auto data() const {
+      return nullptr;
+    }
+    auto size() const {
+      return 0;
+    }
+  };
+  static_assert(vast::detail::container<user_defined_type>);
 }

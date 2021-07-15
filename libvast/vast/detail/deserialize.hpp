@@ -9,7 +9,8 @@
 #pragma once
 
 #include "vast/as_bytes.hpp"
-#include "vast/detail/type_traits.hpp"
+#include "vast/detail/concepts.hpp"
+#include "vast/span.hpp"
 
 #include <caf/binary_deserializer.hpp>
 #include <caf/error.hpp>
